@@ -1,0 +1,26 @@
+---
+import Photo from './Photo.astro';
+import { displayHeadline, categoryLabel, formatShortDate, plainExcerpt, type Article } from '../lib/loadArticles';
+
+interface Props { article: Article }
+const { article } = Astro.props;
+const href = `/article/${article.slug}/`;
+---
+<article class:list={['lead', { 'is-breaking': article.urgency === 'breaking' }]}>
+  <p class="label"><a href={`/section/${article.category}/`}>{categoryLabel(article.category)}</a></p>
+  <h2 class="lead__headline"><a href={href}>{displayHeadline(article)}</a></h2>
+  {article.subhead && <p class="lead__subhead">{article.subhead}</p>}
+  <Photo
+    src={article.photo}
+    caption={article.photo_caption}
+    credit={article.photo_credit}
+    variant="lead"
+  />
+  <p class="byline">
+    {article.author && <span>By {article.author}</span>}
+    {article.date && <span>Due {formatShortDate(article.date)}</span>}
+    {article.due_at && <span class="countdown" data-due={article.due_at}></span>}
+  </p>
+  <p class="lead__excerpt">{plainExcerpt(article.body, 60)}</p>
+  <p class="more"><a href={href}>Read the full story</a></p>
+</article>

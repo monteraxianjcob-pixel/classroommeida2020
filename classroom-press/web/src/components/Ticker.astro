@@ -1,0 +1,35 @@
+---
+import { displayHeadline, type Article } from '../lib/loadArticles';
+interface Props { items: Article[] }
+const { items } = Astro.props;
+---
+{items.length > 0 && (
+  <div class="ticker" role="region" aria-label="Breaking news">
+    <span class="ticker__label">Breaking</span>
+    <div class="ticker__viewport">
+      <ul class="ticker__track" data-ticker>
+        {items.map((a) => (
+          <li class="ticker__item">
+            <a href={`/article/${a.slug}/`}>{displayHeadline(a)}</a>
+            {a.due_at && <span class="ticker__time" data-due={a.due_at}></span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+)}
+
+<script>
+  // Vanilla JS: duplicate the item list once so the CSS scroll loops seamlessly.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLElement>('[data-ticker]').forEach((track) => {
+    if (reduce) return; // static, wrapping list instead of a scroller
+    track.classList.add('is-scrolling');
+    Array.from(track.children).forEach((item) => {
+      const clone = item.cloneNode(true) as HTMLElement;
+      clone.setAttribute('aria-hidden', 'true');
+      clone.querySelectorAll('a').forEach((a) => a.setAttribute('tabindex', '-1'));
+      track.appendChild(clone);
+    });
+  });
+</script>
