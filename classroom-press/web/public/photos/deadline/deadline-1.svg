@@ -1,3 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
-<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8cdb4"/><stop offset="1" stop-color="#9a8d74"/></linearGradient></defs>
-<rect width="1200" height="800" fill="url(#g)"/><circle cx="600" cy="360" r="230" fill="#efe8d4" stroke="#222" stroke-width="16"/><line x1="600" y1="360" x2="600" y2="210" stroke="#222" stroke-width="14"/><line x1="600" y1="360" x2="710" y2="400" stroke="#222" stroke-width="10"/><circle cx="600" cy="360" r="14" fill="#a3141b"/><rect x="0" y="650" width="1200" height="150" fill="#4a3d2e"/></svg>
