@@ -1,0 +1,53 @@
+---
+import '../styles/newspaper.css';
+
+interface Props { title?: string; description?: string }
+const { title, description = 'News, deadlines and announcements for the class.' } = Astro.props;
+const pageTitle = title ? `${title} | Classroom Press` : 'Classroom Press';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap"
+    />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <slot />
+    <script is:inline>
+      // Live countdowns: any element with data-due="<ISO datetime>".
+      (function () {
+        function label(ms) {
+          if (ms <= 0) return 'due now';
+          var mins = Math.floor(ms / 60000);
+          var days = Math.floor(mins / 1440);
+          var hours = Math.floor((mins % 1440) / 60);
+          if (days > 0) return days + 'd ' + hours + 'h left';
+          if (hours > 0) return hours + 'h ' + (mins % 60) + 'm left';
+          return Math.max(mins, 1) + 'm left';
+        }
+        function tick() {
+          var nodes = document.querySelectorAll('[data-due]');
+          for (var i = 0; i < nodes.length; i++) {
+            var t = Date.parse(nodes[i].getAttribute('data-due'));
+            if (isNaN(t)) continue;
+            var ms = t - Date.now();
+            nodes[i].textContent = label(ms);
+            if (ms < 86400000) nodes[i].classList.add('is-urgent');
+          }
+        }
+        tick();
+        setInterval(tick, 60000);
+      })();
+    </script>
+  </body>
+</html>

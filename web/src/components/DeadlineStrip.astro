@@ -1,0 +1,24 @@
+---
+import { displayHeadline, categoryLabel, formatShortDate, dueMs, countdownLabel, type Article } from '../lib/loadArticles';
+interface Props { items: Article[]; nowMs: number }
+const { items, nowMs } = Astro.props;
+---
+<section class="deadlines" aria-labelledby="deadlines-title">
+  <h2 class="label deadlines__title" id="deadlines-title">Coming up</h2>
+  {items.length === 0 ? (
+    <p class="empty">No exams, deadlines or events are scheduled. Check the archive for earlier notices.</p>
+  ) : (
+    <ul class="deadlines__list">
+      {items.map((a) => (
+        <li class="deadlines__item">
+          <span class="label">{categoryLabel(a.category)}</span>
+          <a class="deadlines__headline" href={`/article/${a.slug}/`}>{displayHeadline(a)}</a>
+          <span class="deadlines__when">
+            {formatShortDate(a.date)}
+            {a.due_at && <span class="countdown" data-due={a.due_at}>{countdownLabel(dueMs(a) - nowMs)}</span>}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )}
+</section>

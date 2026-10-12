@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import Masthead from '../components/Masthead.astro';
+import Ticker from '../components/Ticker.astro';
+import LeadStory from '../components/LeadStory.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import DeadlineStrip from '../components/DeadlineStrip.astro';
+import { loadData, frontPage } from '../lib/loadArticles';
+
+const data = loadData();
+const nowMs = Date.now();
+const { lead, banners, secondary, ticker, deadlines } = frontPage(data.articles, nowMs);
+const shownSecondary = secondary.slice(0, 6);
+const hiddenCount = secondary.length - shownSecondary.length;
+---
+<Base>
+  <Ticker items={ticker} />
+  <div class="page">
+    <Masthead
+      edition={data.edition}
+      volume={data.volume}
+      generatedAt={data.generatedAt}
+      sections={data.sections}
+      current="home"
+    />
+    <h1 class="sr-only">Classroom Press front page</h1>
+
+    <main class="front">
+      {banners.length > 0 && (
+        <section class="front__banners" aria-label="Due within 48 hours">
+          {banners.map((a) => <ArticleCard article={a} variant="banner" />)}
+        </section>
+      )}
+
+      {lead ? (
+        <>
+          <div class="front__lead"><LeadStory article={lead} /></div>
+          <aside class="front__side" aria-label="More stories">
+            {shownSecondary.map((a) => <ArticleCard article={a} />)}
+            {hiddenCount > 0 && (
+              <p class="more"><a href="/archive/">{hiddenCount} more in the archive</a></p>
+            )}
+          </aside>
+        </>
+      ) : (
+        <p class="empty front__empty">
+          Nothing is due in the next seven days. Browse a section above or open the
+          <a href="/archive/"> archive</a>.
+        </p>
+      )}
+
+      <div class="front__deadlines"><DeadlineStrip items={deadlines} nowMs={nowMs} /></div>
+
+      <nav class="front__sections" aria-label="Browse by section">
+        {data.sections.map((s) => (
+          <a class="section-tile" href={`/section/${s.slug}/`}>
+            <span class="label">{s.label}</span>
+            <span class="section-tile__desc">{s.description}</span>
+            <span class="section-tile__count">{s.count} {s.count === 1 ? 'story' : 'stories'}</span>
+          </a>
+        ))}
+      </nav>
+    </main>
+  </div>
+</Base>

@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Masthead from '../components/Masthead.astro';
+import { loadData } from '../lib/loadArticles';
+const data = loadData();
+---
+<Base title="Page not found">
+  <div class="page">
+    <Masthead edition={data.edition} volume={data.volume} generatedAt={data.generatedAt} sections={data.sections} />
+    <main class="listing">
+      <h1 class="listing__title">Page not found</h1>
+      <p class="listing__desc">That story is not in this edition. Go back to the <a href="/">front page</a> or the <a href="/archive/">archive</a>.</p>
+    </main>
+  </div>
+</Base>

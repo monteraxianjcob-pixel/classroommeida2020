@@ -1,0 +1,5 @@
+# Layer 1 (GitHub Actions, Python 3.11+). The generator needs only PyYAML;
+# the model call uses the standard library (urllib), so no SDK is required.
+PyYAML>=6.0
+# Tests
+pytest>=8.0
