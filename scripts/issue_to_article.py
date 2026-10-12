@@ -47,7 +47,7 @@ def parse_issue_body(body: str) -> tuple[dict[str, str], str]:
     return fields, text
 
 
-def build_front_matter(title: str, fields: dict[str, str], issue_number: int,
+def build_front_matter(title: str, fields: dict[str, str], issue_number: int | None,
                        default_author: str = "") -> dict:
     category = fields.get("category", "").strip().lower()
     if category not in CATEGORIES:
@@ -61,7 +61,8 @@ def build_front_matter(title: str, fields: dict[str, str], issue_number: int,
         if value:
             fm[key] = value
     fm["pinned"] = False
-    fm["issue_number"] = issue_number
+    if issue_number is not None:
+        fm["issue_number"] = issue_number
     return fm
 
 

@@ -55,6 +55,41 @@ The issue needs the `announcement` label (the template adds it). Field values ar
 only `headline` and `subhead` come from the model/templates. To fix text afterwards, edit the markdown
 file in `content/`.
 
+## Discord (the main way to post)
+
+Static hosting cannot listen for Discord, so `ingest.yml` polls the announcement channel every
+20 minutes with `scripts/discord_ingest.py` (Discord REST API, bot token from a GitHub secret).
+
+**Posting.** Write a message in the channel:
+
+```
+title: Summative test
+category: exam
+subject: Math
+date: 2026-10-20
+caption: The exam hall
+Bring a calculator and two pencils.
+```
+
+- No `title:` line? The first line becomes the title.
+- **Attach an image** and it becomes the cover photo (jpg, png, webp, avif, up to 8 MB; credited to the poster).
+- **Edit the message** and the article is rebuilt on the next poll. Bot messages are ignored.
+- Same fields as issues: category, subject, date, author, location, scope, requirement, restriction.
+
+**Setup.**
+1. Discord Developer Portal → your app → Bot: enable **Message Content Intent**; invite the bot with
+   *View Channel* and *Read Message History* on the announcement channel.
+2. Repo → Settings → Secrets and variables → Actions → add `DISCORD_BOT_TOKEN`.
+   Optional: `DISCORD_WEBHOOK_URL` (a channel webhook; the bot posts "Published to the Press: ..." back).
+3. The channel id is set in `ingest.yml` (`DISCORD_CHANNEL_ID`).
+
+**Never put the bot token in the repo.** Anyone who sees it controls the bot, and tokens pasted into
+public places are scraped within minutes. If a token has appeared in a chat or commit, reset it in the
+developer portal. The Action reads it only from the secret.
+
+Private repos get 2,000 free Actions minutes a month; 20-minute polling uses roughly that much, so
+widen the cron if you run out. The site only rebuilds when Discord actually produced a change.
+
 ## Urgency and placement
 
 Computed from the `date` (a date-only value is due at 23:59:59 that day in `CLASSROOM_TZ`):

@@ -11,12 +11,14 @@ interface Props {
 const { edition, volume, generatedAt, sections, current } = Astro.props;
 ---
 <header class="masthead">
-  <div class="masthead__bar">
-    <span class="masthead__edition">Vol. {volume}, No. {edition}</span>
-    <time class="masthead__date" datetime={generatedAt.slice(0, 10)}>{formatLongDate(generatedAt)}</time>
-    <span class="masthead__class">{SITE.className}</span>
+  <div class="masthead__top">
+    <p class="masthead__name"><a href="/">{SITE.name}</a></p>
+    <div class="masthead__stamp">
+      <span class="masthead__edition">Vol. {volume}, No. {edition}</span>
+      <span class="masthead__class">{SITE.className}</span>
+    </div>
   </div>
-  <p class="masthead__name"><a href="/">The {SITE.name}</a></p>
+  <p class="masthead__date"><time datetime={generatedAt.slice(0, 10)}>{formatLongDate(generatedAt)}</time></p>
   <nav class="masthead__nav" aria-label="Sections">
     <a href="/" aria-current={current === 'home' ? 'page' : undefined}>Front page</a>
     {sections.map((s) => (

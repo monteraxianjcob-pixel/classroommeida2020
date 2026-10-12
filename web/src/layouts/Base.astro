@@ -17,12 +17,22 @@ const pageTitle = title ? `${title} | Classroom Press` : 'Classroom Press';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap"
     />
     <title>{pageTitle}</title>
   </head>
   <body>
     <slot />
+    <footer class="footer">
+      <div class="footer__inner">
+        <p class="footer__title">Got a story?</p>
+        <p class="footer__text">
+          Post it in the announcements channel on Discord. Start with a title, add lines like
+          <code>category: exam</code>, <code>date: 2026-10-20</code>, <code>subject: Math</code>, then write the story.
+          Attach a picture and it becomes the cover photo. Edit your message and the page updates in about 20 minutes.
+        </p>
+      </div>
+    </footer>
     <script is:inline>
       // Live countdowns: any element with data-due="<ISO datetime>".
       (function () {
